@@ -4,7 +4,7 @@
   "description": "Expert - Occupational Health and Safety AI Assistant",
   "main": "index.html",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "echo 'Building static HUD...'",
     "sync": "npx cap sync",
     "open:android": "npx cap open android"
   },
