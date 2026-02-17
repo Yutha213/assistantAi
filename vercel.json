@@ -1,16 +1,3 @@
 {
-    "version": 2,
-    "name": "expert-ai-hud",
-    "builds": [
-        {
-            "src": "index.html",
-            "use": "@vercel/static"
-        }
-    ],
-    "rewrites": [
-        {
-            "source": "/(.*)",
-            "destination": "/index.html"
-        }
-    ]
+    "cleanUrls": true
 }
