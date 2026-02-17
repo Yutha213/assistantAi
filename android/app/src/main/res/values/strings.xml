@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Expert AI</string>
+    <string name="title_activity_main">Expert AI</string>
+    <string name="package_name">com.expert.ai.safety</string>
+    <string name="custom_url_scheme">com.expert.ai.safety</string>
+</resources>

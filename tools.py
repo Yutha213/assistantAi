@@ -43,6 +43,67 @@ async def search_web(
         logging.error(f"Error searching the web for '{query}': {e}")
         return f"An error occurred while searching the web for '{query}'."    
 
+@function_tool()
+async def search_knowledge_base(
+    context: RunContext, # type: ignore
+    query: str) -> str:
+    """
+    Search the proprietary knowledge base for specific information using vector similarity search.
+    Use this tool when you need factual information from the uploaded documents.
+    """
+    try:
+        from supabase import create_client, Client
+        
+        url = os.getenv("SUPABASE_URL")
+        key = os.getenv("SUPABASE_SERVICE_ROLE_KEY")
+        jina_key = os.getenv("JINA_API_KEY")
+        
+        if not all([url, key, jina_key]) or jina_key == "YOUR_JINA_API_KEY_HERE":
+            logging.error("Missing Supabase or Jina API credentials")
+            return "Search failed: Credentials not configured."
+
+        # 1. Generate Query Embedding via Jina AI
+        jina_url = "https://api.jina.ai/v1/embeddings"
+        headers = {
+            "Content-Type": "application/json",
+            "Authorization": f"Bearer {jina_key}"
+        }
+        data = {
+            "model": "jina-embeddings-v2-base-en", # Match detected dimension 768
+            "input": [query]
+        }
+        
+        emb_res = requests.post(jina_url, headers=headers, json=data)
+        if emb_res.status_code != 200:
+            logging.error(f"Jina AI error: {emb_res.status_code} - {emb_res.text}")
+            return f"Failed to generate search embeddings: {emb_res.text}"
+            
+        embedding = emb_res.json()["data"][0]["embedding"]
+        
+        # 2. Search Supabase via RPC
+        supabase: Client = create_client(url, key)
+        search_res = supabase.rpc("match_knowledge_base", {
+            "query_embedding": embedding,
+            "match_threshold": 0.5,
+            "match_count": 5
+        }).execute()
+        
+        if not search_res.data:
+            return "No relevant information found in the knowledge base."
+            
+        # 3. Format results
+        context_parts = []
+        for i, item in enumerate(search_res.data):
+            content = item.get("content", "")
+            context_parts.append(f"Result {i+1}:\n{content}")
+            
+        logging.info(f"Retrieved {len(context_parts)} documents from knowledge base for query: {query}")
+        return "\n\n".join(context_parts)
+
+    except Exception as e:
+        logging.error(f"Error searching knowledge base: {e}")
+        return f"An error occurred while searching the knowledge base: {str(e)}"
+
 @function_tool()    
 async def send_email(
     context: RunContext,  # type: ignore
