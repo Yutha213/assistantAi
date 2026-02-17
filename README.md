@@ -107,6 +107,23 @@ Before you start, **make sure to follow this tutorial to set up the voice agent 
 
 ---
 
+## 🌐 Deployment
+
+### Frontend (Vercel)
+The web HUD is ready for one-click deployment to Vercel.
+1. Push your code to GitHub.
+2. Connect your repository to [Vercel](https://vercel.com).
+3. Add the following **Environment Variables** in the Vercel dashboard:
+   - `LIVEKIT_URL`
+   - `LIVEKIT_API_KEY`
+   - `LIVEKIT_API_SECRET`
+   - `GOOGLE_API_KEY`
+
+### Backend (AI Agent)
+The Python-based AI agent (`agent.py`) needs to run as a long-running process (not a serverless function).
+- **Host**: Use a VPS (DigitalOcean, AWS) or a specialized service like **Fly.io** or **Railway**.
+- **Run Command**: `python agent.py start` (ensure the virtual environment is active).
+
 ## 📞 Support
 
 For technical support or questions about Expert, refer to the LiveKit documentation or the tutorial video linked above.
