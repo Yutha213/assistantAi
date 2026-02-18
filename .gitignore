@@ -18,3 +18,9 @@ dist/
 # OS files
 .DS_Store
 Thumbs.db
+
+# IDEs
+.idea/
+.vscode/
+*.swp
+*.swo

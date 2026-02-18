@@ -4,9 +4,9 @@
   "description": "Expert - Occupational Health and Safety AI Assistant",
   "main": "index.html",
   "scripts": {
-    "build": "echo 'Building static HUD...'",
     "sync": "npx cap sync",
-    "open:android": "npx cap open android"
+    "open:android": "npx cap open android",
+    "build": "mkdir -p dist && cp index.html style.css app.js dist/"
   },
   "keywords": [
     "safe",

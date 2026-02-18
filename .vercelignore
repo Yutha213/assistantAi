@@ -1,0 +1,17 @@
+# Backend files
+*.py
+requirements.txt
+Procfile
+venv/
+__pycache__/
+supabase_setup.sql
+
+# Development files
+.idea/
+.git/
+node_modules/
+android/
+capacitor.config.json
+
+# Unused/Old frontend
+www/
